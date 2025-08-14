@@ -7,10 +7,15 @@ import { CrearUsuarioDto } from './dto/crear-usuario.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  
+
   @Post('login')
-  async login(@Body() loginDto: LoginDto) {
-    return this.authService.login(loginDto.nombre, loginDto.password);
-  }
+async login(@Body() loginDto: LoginDto) {
+   console.log('Datos recibidos en login:', loginDto);
+  const { nombre, password } = loginDto;
+  return this.authService.login(nombre, password);
+}
+
 
   @Post('register')
   async register(@Body() crearUsuarioDto: CrearUsuarioDto) {
