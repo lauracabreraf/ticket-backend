@@ -37,6 +37,8 @@ export class AuthService {
     return result;
   }
 
+
+
   async register(nombre: string, password: string) {
     const usuarioExistente = await this.usuariosService.encontrarPorNombre(nombre);
     if (usuarioExistente) {
@@ -54,6 +56,10 @@ export class AuthService {
     return usuarioSinPassword;
   }
 
+
+
+
+
   async login(nombre: string, password: string) {
     console.log('--- LOGIN ---');
     const usuario = await this.validarUsuario(nombre, password);
@@ -67,4 +73,7 @@ export class AuthService {
       access_token: token,
     };
   }
-}
+
+  }
+
+
