@@ -6,6 +6,8 @@ import * as bcrypt from 'bcrypt';
 import { UpdateUsuarioDto } from '../auth/dto/update-usuario.dto';
 
 
+
+
 @Injectable()
 export class UsuariosService {
   constructor(
@@ -44,14 +46,18 @@ export class UsuariosService {
   }
 
   
+
+
   async encontrarPorNombre(nombre: string): Promise<Usuario | null> {
     return this.usuariosRepository.findOne({ where: { nombre } });
   }
 
- 
+
   async listarUsuarios(): Promise<Usuario[]> {
     return this.usuariosRepository.find();
   }
+
+
 
   async update(id: number, data: UpdateUsuarioDto): Promise<Usuario> {
   const usuario = await this.usuariosRepository.findOneBy({ id });
@@ -66,6 +72,8 @@ export class UsuariosService {
   return this.usuariosRepository.save(usuario);
 
 }
+
+
  async remove(id: number): Promise<string> {
   const usuario = await this.usuariosRepository.findOneBy({ id });
   if (!usuario) throw new Error('Usuario no encontrado');

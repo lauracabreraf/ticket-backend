@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Ticket } from '../tickets/entities/tickets.entity';
 
 export enum Rol {
   ADMIN = 'admin',
@@ -23,4 +24,15 @@ export class Usuario {
     default: Rol.USUARIO,
   })
   rol: Rol;
+
+
+  @OneToMany(() => Ticket, (ticket) => ticket.creadoPor)
+  ticketsCreados: Ticket[];
+
+
+
+  
+  @OneToMany(() => Ticket, (ticket) => ticket.asignadoA)
+  ticketsAsignados: Ticket[];
+
 }

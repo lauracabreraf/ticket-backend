@@ -3,14 +3,17 @@ import { UsuariosService } from './usuarios.service';
 import { Usuario } from './usuario.entity';
 import { CrearUsuarioDto } from '../auth/dto/crear-usuario.dto';
 import { UpdateUsuarioDto } from '../auth/dto/update-usuario.dto';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 
-@Controller('usuarios')
-export class UsuariosController {
+  @UseGuards(JwtAuthGuard)
+  @Controller('usuarios')
+  export class UsuariosController {
   constructor(private readonly usuariosService: UsuariosService) {}
 
   @Post()
- crear(@Body() data: CrearUsuarioDto) {
+  crear(@Body() data: CrearUsuarioDto) {
   return this.usuariosService.crearUsuario(data);
 }
 
@@ -25,8 +28,8 @@ export class UsuariosController {
   return this.usuariosService.update(id, data);
 }
 
-@Delete(':id')
-remove(@Param('id') id: number) {
+  @Delete(':id')
+  remove(@Param('id') id: number) {
   return this.usuariosService.remove(id);
 }
 
