@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Get, Put, Delete, ParseIntPipe, Req, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, Param, Get, Put, Delete, ParseIntPipe, Req, UseGuards, Patch } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 
@@ -36,4 +36,27 @@ export class TicketsController {
   async deleteTicket(@Param('id', ParseIntPipe) id: number) {
     return this.ticketsService.deleteTicket(id);
   }
+
+  @Patch('editar/:id')
+async updateTicket(
+  @Param('id', ParseIntPipe) id: number,
+  @Body() updateData: Partial<CreateTicketDto>,
+) {
+  return this.ticketsService.updateTicket(id, updateData);
 }
+
+
+@Patch('cerrar/:id')
+async cerrarTicket(
+  @Param('id', ParseIntPipe) id: number,
+  @Req() req: AuthRequest,
+) {
+  const userId = req.user.id;
+  return this.ticketsService.cerrarTicket(id, userId);
+}
+
+
+  
+
+   }
+

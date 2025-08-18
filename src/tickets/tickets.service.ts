@@ -41,22 +41,50 @@ export class TicketsService {
     return this.ticketRepository.find({ where: { creadoPor: { id: userId } } });
   }
 
+
   async getAssignedTickets(userId: number): Promise<Ticket[]> {
     return this.ticketRepository.find({ where: { asignadoA: { id: userId } } });
   }
 
+
   async updateTicket(id: number, updateData: Partial<CreateTicketDto>): Promise<Ticket> {
-    const ticket = await this.ticketRepository.findOne({ where: { id } });
-    if (!ticket) throw new Error('Ticket no encontrado');
+  const ticket = await this.ticketRepository.findOne({ where: { id } });
+  if (!ticket) throw new Error('Ticket no encontrado');
 
-    Object.assign(ticket, updateData);
-    return this.ticketRepository.save(ticket);
+  Object.assign(ticket, updateData);
+  return this.ticketRepository.save(ticket);
+}
+
+
+
+
+  async deleteTicket(id: number): Promise<string> {
+  const ticket = await this.ticketRepository.findOne({ where: { id } });
+  if (!ticket) throw new Error('Ticket no encontrado');
+
+  await this.ticketRepository.remove(ticket);
+  return 'Ticket eliminado correctamente';
+}
+
+async cerrarTicket(id: number, userId: number): Promise<Ticket> {
+  const ticket = await this.ticketRepository.findOne({ where: { id }, relations: ['creadoPor', 'estado'] });
+  if (!ticket) throw new Error('Ticket no encontrado');
+
+  
+  if (ticket.creadoPor.id !== userId) {
+  
+    throw new Error('No tienes permiso para cerrar este ticket');
   }
 
-  async deleteTicket(id: number): Promise<void> {
-    const ticket = await this.ticketRepository.findOne({ where: { id } });
-    if (!ticket) throw new Error('Ticket no encontrado');
+  
+  const estadoCerrado = await this.estadoRepository.findOne({ where: { nombre: 'CERRADO' } });
+  if (!estadoCerrado) throw new Error('Estado CERRADO no existe');
 
-    await this.ticketRepository.remove(ticket);
-  }
+  ticket.estado = estadoCerrado;
+  ticket.fechaResolucion = new Date();
+
+  return this.ticketRepository.save(ticket);
+}
+
+
 }

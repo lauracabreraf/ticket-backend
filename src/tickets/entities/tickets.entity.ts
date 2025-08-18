@@ -33,4 +33,8 @@ export class Ticket {
 
   @UpdateDateColumn()
   fechaActualizacion: Date;
+
+  @Column({ type: 'timestamp', nullable: true })
+fechaResolucion?: Date;
+
 }
