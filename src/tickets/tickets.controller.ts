@@ -4,6 +4,7 @@ import { CreateTicketDto } from './dto/create-ticket.dto';
 
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Request } from 'express';
+import { Ticket } from './entities/tickets.entity';
 
 
 interface AuthRequest extends Request {
@@ -56,7 +57,9 @@ async cerrarTicket(
 }
 
 
-  
+@Get()
+  listar(): Promise<Ticket[]> {
+    return this.ticketsService.listarTicket();
+  }
 
    }
-

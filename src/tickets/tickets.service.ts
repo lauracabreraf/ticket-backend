@@ -38,8 +38,12 @@ export class TicketsService {
   }
 
   async getTicketsByUserId(userId: number): Promise<Ticket[]> {
-    return this.ticketRepository.find({ where: { creadoPor: { id: userId } } });
-  }
+  return this.ticketRepository.find({
+    where: { creadoPor: { id: userId } },
+    relations: ["estado"], 
+  });
+}
+
 
 
   async getAssignedTickets(userId: number): Promise<Ticket[]> {
@@ -85,6 +89,13 @@ async cerrarTicket(id: number, userId: number): Promise<Ticket> {
 
   return this.ticketRepository.save(ticket);
 }
+
+async listarTicket(): Promise<Ticket[]> {
+  return this.ticketRepository.find({
+    relations: ['estado'], 
+  });
+}
+
 
 
 }
